@@ -10,7 +10,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/base/Snackbar";
 import { SnackbarCloseReason } from "@mui/base/useSnackbar";
-
+const BASE_URl = import.meta.env.VITE_BASE_URL;
 const UpdateRestuarant = () => {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState<Restaurant>();
@@ -19,22 +19,21 @@ const UpdateRestuarant = () => {
   const nodeRef = useRef(null);
 
   useEffect(() => {
-    // http://localhost:3030/restaurants
     const get = async () => {
-      const res = await axios.get(`http://localhost:3030/restaurants/${id}`);
-      setRestaurant(res.data);
-      //   console.log(res.data);
+      const res = await axios.get(`${BASE_URl}/restaurants/${id}`);
+      setRestaurant(res.data.restuants[0]);
+      console.log(res.data.restuants[0]);
     };
     get();
   }, []);
 
   const handleOnSumit = async () => {
-    const res = await axios.put(
-      `http://localhost:3030/restaurants/${id}`,
-      restaurant
-    );
-    // console.log(res.data);
-    // console.log("res.status", res.status);
+    const res = await axios.put(`${BASE_URl}/restaurants/${id}`, {
+      name: restaurant?.name,
+      type: restaurant?.type,
+      imgUrl: restaurant?.imageUrl,
+    });
+
     if (res.status) {
       setOpen(true);
     }

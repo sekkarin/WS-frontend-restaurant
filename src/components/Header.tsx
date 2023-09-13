@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <AppBar position="fixed" color="inherit">
+    <AppBar position="fixed" color="inherit" >
       <Toolbar >
         <FoodBankOutlined
           sx={{ mr: 2 }}
@@ -27,7 +27,7 @@ const Header = () => {
             },
           }}
           onClick={() => {
-            navigate("./AddRestaurants");
+            navigate("../AddRestaurants");
           }}
         >
           เพิ่มข้อมูล

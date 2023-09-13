@@ -9,7 +9,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/base/Snackbar";
 import { SnackbarCloseReason } from "@mui/base/useSnackbar";
-
+const BASE_URl = import.meta.env.VITE_BASE_URL
 const AddRestaurants = () => {
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [open, setOpen] = useState(false);
@@ -20,9 +20,11 @@ const AddRestaurants = () => {
     console.log(restaurant);
     
     const res = await axios.post(
-      `http://localhost:3030/restaurants`,
-      restaurant
+      `${BASE_URl}/restaurants`,
+      {...restaurant,imgUrl:restaurant?.imageUrl}
     );
+    console.log(res.data);
+    
     if (res.status) {
       setOpen(true);
     }
