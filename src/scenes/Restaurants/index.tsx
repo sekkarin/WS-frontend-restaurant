@@ -16,6 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 const BASE_URl = import.meta.env.VITE_BASE_URL;
 // console.log(BASE_URl);
 
@@ -25,21 +26,23 @@ export interface Restaurant {
   type?: string;
   imageUrl?: string;
   createdAt?: string;
+  // match?: () => any;
 }
 const Restaurants = () => {
-  const [data, setData] = useState<Restaurant[]>([]);
   const navigate = useNavigate();
+  const [data, setData] = useState<Restaurant[]>([]); //! All data
+  const [searchData, setSearchData] = useState<Restaurant[]>([]); //! filter data
   const [openDialog, setOpenDialog] = useState(false);
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [reload, setReload] = useState(false);
   const [isloading, setIsloading] = useState(true);
+
   useEffect(() => {
     setIsloading(false);
     const get = async () => {
       const res = await axios.get(`${BASE_URl}/restaurants`);
       setData(res.data.restuants);
-      console.log(res.data.restuants);
-      
+      setSearchData(res.data.restuants);
       setIsloading(true);
     };
     get();
@@ -67,10 +70,29 @@ const Restaurants = () => {
       setReload((prev) => !prev);
     }
   };
+  /* The `onSearch` function is responsible for filtering the restaurant data based on a search query. */
+  const onSearch = (search: string) => {
+    if (search === "") {
+      setSearchData(data);
+    } else {
+      setSearchData(data);
+
+      const searchResult = data.map((value) => {
+        if (value.name?.includes(search)) {
+          return value;
+        }
+      });
+
+      const searchFilter = searchResult.filter((value) => value !== undefined);
+      if (searchFilter) {
+        setSearchData(searchFilter as Restaurant[]);
+      }
+    }
+  };
 
   return (
     <>
-      <Header />
+      <Header onSearch={onSearch} />
       {isloading ? (
         <Box
           sx={{
@@ -103,8 +125,12 @@ const Restaurants = () => {
           </Container>
           <Container maxWidth="md">
             <Grid container spacing={4}>
-              {data.map((restaurant) =>
-                ListRetuarant(restaurant, navigate, handleClickOpenDialog)
+              {searchData.length > 0 ? (
+                searchData!.map((restaurant) =>
+                  ListRetuarant(restaurant, navigate, handleClickOpenDialog)
+                )
+              ) : (
+                <p className="text-center text-4xl mt-5 w-full">ไม่มีข้อมูล</p>
               )}
             </Grid>
           </Container>
@@ -112,9 +138,15 @@ const Restaurants = () => {
       ) : (
         <div className="flex">
           <Container maxWidth="md">
-            <Grid container spacing={2} gridRow={4} columns={1} direction={"column"}>
+            <Grid
+              container
+              spacing={2}
+              gridRow={4}
+              columns={1}
+              direction={"column"}
+            >
               <Grid item xs={8}>
-                <Skeleton variant="rectangular" height={200}  animation="wave" />
+                <Skeleton variant="rectangular" height={200} animation="wave" />
               </Grid>
               <Grid item xs={8}>
                 <Skeleton variant="rectangular" height={200} animation="wave" />
