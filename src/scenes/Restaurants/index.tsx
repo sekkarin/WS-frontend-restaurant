@@ -17,6 +17,9 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
+
 const BASE_URl = import.meta.env.VITE_BASE_URL;
 // console.log(BASE_URl);
 
@@ -35,15 +38,15 @@ const Restaurants = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [reload, setReload] = useState(false);
-  const [isloading, setIsloading] = useState(true);
+  const [islanding, setLoading] = useState(true);
 
   useEffect(() => {
-    setIsloading(false);
+    setLoading(false);
     const get = async () => {
       const res = await axios.get(`${BASE_URl}/restaurants`);
       setData(res.data.restuants);
       setSearchData(res.data.restuants);
-      setIsloading(true);
+      setLoading(true);
     };
     get();
   }, [reload]);
@@ -63,7 +66,7 @@ const Restaurants = () => {
   const handleDelete = async () => {
     setOpenDialog(false);
     const res = await axios.delete(`${BASE_URl}/restaurants/${restaurant?.id}`);
-    // console.log(res.status);
+
     if (res.status === 200) {
       setOpenDialog(false);
       setRestaurant({});
@@ -92,8 +95,23 @@ const Restaurants = () => {
 
   return (
     <>
-      <Header onSearch={onSearch} />
-      {isloading ? (
+      <Header
+        onSearch={
+          <>
+            {" "}
+            <SearchIcon scale={2} />
+            <InputBase
+              placeholder="search"
+              onChange={(
+                e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                onSearch(e.target.value);
+              }}
+            />
+          </>
+        }
+      />
+      {islanding ? (
         <Box
           sx={{
             bgcolor: "Background.paper",

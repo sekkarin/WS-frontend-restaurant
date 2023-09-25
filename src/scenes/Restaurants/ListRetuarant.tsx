@@ -8,13 +8,12 @@ import {
   CardMedia,
 } from "@mui/material";
 import { Restaurant } from ".";
-import React from "react";
 import { NavigateFunction } from "react-router-dom";
 
 export function ListRetuarant(
   restaurant: Restaurant,
   navigate: NavigateFunction,
-  handleOnDelete: (_restaurant: Restaurant|undefined) => void
+  handleOnDelete: (_restaurant: Restaurant | undefined) => void
 ) {
   return (
     <Grid item xs={12} sm={6} md={4} key={restaurant.id}>

@@ -2,11 +2,10 @@ import { useNavigate } from "react-router-dom";
 
 import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import { FoodBankOutlined } from "@mui/icons-material";
-import InputBase from "@mui/material/InputBase";
 
-import SearchIcon from "@mui/icons-material/Search";
+import React, { ReactElement } from "react";
 interface HeaderProps {
-  onSearch: (search: string) => void;
+  onSearch?: ReactElement | ReactElement[] | React.ReactNode;
 }
 const Header = ({ onSearch }: HeaderProps) => {
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const Header = ({ onSearch }: HeaderProps) => {
             ":hover": {
               bgcolor: "#F0DE36",
             },
-            mx:5
+            mx: 5,
           }}
           onClick={() => {
             navigate("../AddRestaurants");
@@ -38,15 +37,7 @@ const Header = ({ onSearch }: HeaderProps) => {
         >
           เพิ่มข้อมูล
         </Button>
-        <SearchIcon scale={2} />
-        <InputBase
-          placeholder="search"
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-          ) => {
-            onSearch(e.target.value);
-          }}
-        />
+        {onSearch}
       </Toolbar>
     </AppBar>
   );
