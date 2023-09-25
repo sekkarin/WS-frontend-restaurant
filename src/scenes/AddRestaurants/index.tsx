@@ -6,9 +6,10 @@ import { Restaurant } from "../Restaurants";
 import { Transition } from "react-transition-group";
 import { styled } from "@mui/system";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/base/Snackbar";
 import { SnackbarCloseReason } from "@mui/base/useSnackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const BASE_URl = import.meta.env.VITE_BASE_URL;
 const AddRestaurants = () => {
@@ -171,10 +172,9 @@ const AddRestaurants = () => {
                     
                   </p> */}
                 </div>
-                <CloseIcon
-                  onClick={handleClose}
-                  className="snackbar-close-icon"
-                />
+                <IconButton>
+                  <CloseIcon className="snackbar-close-icon" />
+                </IconButton>
               </SnackbarContent>
             );
           }}
